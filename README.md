@@ -92,6 +92,98 @@ Juego de ruleta con:
 - **Tipografía moderna**: Uso de Google Fonts (Orbitron, Roboto Condensed, Rajdhani)
 - **Responsive design**: Adaptable a diferentes tamaños de pantalla
 
+## 🎲 Provably Fair - Sistema de Juego Justo y Verificable
+
+Este proyecto implementa principios de **"Provably Fair"** (juego demostrable y justo), un concepto fundamental en los juegos de casino en línea que garantiza transparencia y equidad.
+
+### ¿Qué es Provably Fair?
+
+**Provably Fair** es un sistema que permite a los jugadores verificar que los resultados del juego son genuinamente aleatorios y no han sido manipulados. A diferencia de los casinos tradicionales donde debes confiar ciegamente en el sistema, aquí puedes **verificar matemáticamente** que cada resultado es justo.
+
+### Implementación en este Proyecto
+
+#### 🔀 Algoritmo de Barajado: Fisher-Yates
+
+Todos los juegos de cartas utilizan el **algoritmo Fisher-Yates** (también conocido como Knuth shuffle), que es el estándar de la industria para barajado aleatorio:
+
+```javascript
+function shuffleDeck() {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+}
+```
+
+**Ventajas del Fisher-Yates:**
+
+- ✅ Distribución uniforme perfecta
+- ✅ Cada permutación tiene la misma probabilidad
+- ✅ Eficiencia O(n) - una sola pasada
+- ✅ Usado por casinos profesionales en línea
+
+#### 🎯 Transparencia del Código
+
+- **Código abierto**: Todo el código fuente es visible y auditable
+- **Sin servidor**: Los juegos se ejecutan 100% en el navegador del cliente
+- **Sin comunicación externa**: No hay llamadas a APIs que puedan manipular resultados
+- **Aleatorización del cliente**: El navegador genera los números aleatorios usando `Math.random()`
+
+#### 🔍 Verificabilidad
+
+Puedes verificar la equidad del juego de las siguientes maneras:
+
+1. **Inspeccionar el código**: Abre las DevTools del navegador y revisa el código JavaScript
+2. **Verificar la lógica**: Todas las funciones de barajado y cálculo son visibles
+3. **Probar estadísticamente**: Juega múltiples rondas y verifica que los resultados siguen una distribución normal
+4. **Sin trucos ocultos**: No hay código ofuscado ni minificado
+
+### Principios de Equidad Implementados
+
+| Principio         | Implementación                                  |
+| ----------------- | ----------------------------------------------- |
+| **Aleatoriedad**  | Algoritmo Fisher-Yates con `Math.random()`      |
+| **Transparencia** | Código fuente completamente visible             |
+| **Inmutabilidad** | Las cartas no se modifican después del barajado |
+| **Determinismo**  | Mismas reglas para jugador y crupier            |
+| **Auditabilidad** | Todo el código es open source                   |
+
+### Limitaciones y Consideraciones
+
+⚠️ **Nota importante**: Este proyecto usa `Math.random()` de JavaScript, que es un generador pseudoaleatorio. Para un casino real en producción, se debería usar:
+
+- **Crypto.getRandomValues()** para aleatoriedad criptográficamente segura
+- **Semillas verificables** que el jugador pueda inspeccionar antes del juego
+- **Hashes criptográficos** para probar que los resultados no fueron alterados después
+
+### Ejemplo de Mejora para Producción
+
+Para un sistema Provably Fair de nivel profesional, se implementaría:
+
+```javascript
+// Generar semilla del servidor (hash SHA-256)
+const serverSeed = "hash_generado_antes_del_juego";
+
+// Semilla del cliente (puede ser proporcionada por el jugador)
+const clientSeed = "semilla_del_jugador";
+
+// Combinar y generar resultado verificable
+const result = generateProvablyFairResult(serverSeed, clientSeed);
+
+// El jugador puede verificar después que:
+// SHA-256(serverSeed + clientSeed) = resultado_mostrado
+```
+
+### Por qué es Importante
+
+En casinos tradicionales en línea, debes confiar en que:
+
+- Las cartas están realmente barajadas
+- El sistema no favorece a la casa más allá de la ventaja matemática normal
+- Los resultados no están predeterminados
+
+Con **Provably Fair**, puedes **verificar** todo esto tú mismo.
+
 ## 🚀 Cómo Ejecutar
 
 1. Clona o descarga este repositorio
